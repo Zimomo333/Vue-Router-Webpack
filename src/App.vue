@@ -21,13 +21,9 @@
         </el-row>
     </div>
 </template>
-<style>
-h3 {
-    text-align: center;
-}
-</style>
+
 <script>
-import { routes } from './router'
+import { routes } from './router'   // {}指定需要引用的模块
 export default {
     name: 'App',
     data(){
@@ -37,3 +33,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>  /* scoped 范围css 防止全局污染 */
+h3 {
+    text-align: center;
+}
+</style>
