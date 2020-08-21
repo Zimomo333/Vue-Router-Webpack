@@ -25,15 +25,15 @@ npm i element-ui -S
 
 npm i vue-router -S
 
-npm i webpack webpack-dev-server -D     //server用于运行打包后的dist资源
+npm i webpack webpack-dev-server -D         //server用于运行打包后的dist资源
 
 <!-- webpack loader -->
 npm i vue-loader vue-template-compiler -D	//解析vue文件、模板
-npm i css-loader style-loader -D        //解析Element-UI的CSS文件
-npm i file-loader -D                //解析Element-UI的字体文件
+npm i css-loader style-loader -D            //解析Element-UI的CSS文件
+npm i file-loader -D                        //解析Element-UI的字体文件
 
 <!-- webpack plugin -->
-npm i html-webpack-plugin -D            //自动生成注入js的index.html
+npm i html-webpack-plugin -D                //自动生成注入js的index.html
 ```
 
 
