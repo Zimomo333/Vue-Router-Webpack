@@ -4,8 +4,8 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 export const routes = [
-    { path: '/foo', name: 'Foo', component: () => import('../views/Foo.vue') },
-    { path: '/bar', name: 'Bar', component: () => import('../views/Bar.vue') }
+    { path: '/info', name: '个人中心', icon: 'el-icon-user-solid', component: () => import('../views/info.vue') },
+    { path: '/orders', name: '我的订单', icon: 'el-icon-s-order', component: () => import('../views/orders.vue') }
 ]
 // 3. 创建 router 实例，然后传 `routes` 配置
 // 你还可以传别的配置参数, 不过先这么简单着吧。
