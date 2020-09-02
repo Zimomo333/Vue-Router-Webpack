@@ -32,7 +32,7 @@ export const routes = [
                 path: '/submit',
                 component: () => import('./views/orders/submit.vue'),
                 meta: { 
-                    title: '订单管理',
+                    title: '提交订单',
                     icon: 'el-icon-s-order'
                 }
             }
