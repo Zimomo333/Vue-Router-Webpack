@@ -8,10 +8,9 @@
                 class="el-menu-vertical-demo"
                 router
                 >
-                <el-menu-item v-for="item in routes" :key="item.path" :index="item.path">
-                    <i :class="item.icon"></i>
-                    <span slot="title">{{item.name}}</span>
-                </el-menu-item>
+
+                <sidebar-item v-for="route in routes" :key="route.path" :item="route" />
+
                 </el-menu>
             </el-col>
             <el-col :span="16">
@@ -24,8 +23,13 @@
 
 <script>
 import { routes } from './router'   // {}指定需要引用的模块
+import SidebarItem from './views/SidebarItem.vue'
+
 export default {
     name: 'App',
+    components: { 
+        SidebarItem
+    },
     data(){
         return {
             routes

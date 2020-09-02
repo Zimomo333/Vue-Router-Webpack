@@ -28,7 +28,7 @@ npm i vue-router -S
 npm i webpack webpack-dev-server -D         //server用于运行打包后的dist资源
 
 <!-- webpack loader -->
-npm i vue-loader vue-template-compiler -D	//解析vue文件、模板
+npm i vue-loader vue-template-compiler -D   //解析vue文件、模板
 npm i css-loader style-loader -D            //解析Element-UI的CSS文件
 npm i file-loader -D                        //解析Element-UI的字体文件
 
