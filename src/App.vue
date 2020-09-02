@@ -14,6 +14,10 @@
                 </el-menu>
             </el-col>
             <el-col :span="16">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                    <el-breadcrumb-item>{{this.$route.meta.title}}</el-breadcrumb-item>
+                </el-breadcrumb>
                 <h3>正文</h3>
                 <router-view />
             </el-col>
@@ -30,10 +34,12 @@ export default {
     components: { 
         SidebarItem
     },
-    data(){
+    data() {
         return {
             routes
         }
+    },
+    methods: {
     }
 }
 </script>
@@ -41,5 +47,9 @@ export default {
 <style scoped>  /* scoped 范围css 防止全局污染 */
 h3 {
     text-align: center;
+}
+.el-breadcrumb {
+    font-size: 1.17em;
+    margin: 21.92px;
 }
 </style>

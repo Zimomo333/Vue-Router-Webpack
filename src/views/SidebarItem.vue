@@ -4,15 +4,15 @@
     <!-- 如果没有子路由 -->
     <template v-if="!item.children">
         <el-menu-item :key="item.path" :index="item.path">
-          <i :class="item.icon"></i>
-          <span slot="title">{{item.title}}</span>
+          <i :class="item.meta.icon"></i>
+          <span slot="title">{{item.meta.title}}</span>
         </el-menu-item>
     </template>
     <!-- 如果有子路由，渲染子菜单 -->
     <el-submenu v-else :index="item.path">
       <template slot="title">
-          <i :class="item.icon"></i>
-          <span>{{item.title}}</span>
+          <i :class="item.meta.icon"></i>
+          <span>{{item.meta.title}}</span>
       </template>
       <sidebar-item v-for="child in item.children" :key="child.path" :item="child" />
     </el-submenu>

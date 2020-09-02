@@ -6,27 +6,35 @@ Vue.use(VueRouter)
 export const routes = [
     { 
         path: '/info',
-        title: '个人中心',
-        icon: 'el-icon-user-solid',
-        component: () => import('./views/info.vue')
+        component: () => import('./views/info.vue'),
+        meta: { 
+            title: '个人中心',
+            icon: 'el-icon-user-solid'
+        }
     },
     { 
         path: '/orders',
-        title: '订单管理',
-        icon: 'el-icon-s-order',
         component: () => import('./views/orders/index.vue'),
+        meta: { 
+            title: '订单管理',
+            icon: 'el-icon-s-order'
+        },
         children: [
             {
                 path: '/my-orders',
-                title: '我的订单',
-                icon: 'el-icon-s-order',
                 component: () => import('./views/orders/myOrders.vue'),
+                meta: { 
+                    title: '我的订单',
+                    icon: 'el-icon-s-order'
+                }
             },
             {
                 path: '/submit',
-                title: '订单管理',
-                icon: 'el-icon-s-order',
                 component: () => import('./views/orders/submit.vue'),
+                meta: { 
+                    title: '订单管理',
+                    icon: 'el-icon-s-order'
+                }
             }
         ]
     }
