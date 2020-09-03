@@ -35,7 +35,7 @@
 
 <script>
 import { routes } from './router'   // {}指定需要引用的模块
-import SidebarItem from './views/SidebarItem.vue'
+import SidebarItem from './components/SidebarItem.vue'
 
 export default {
     name: 'App',
@@ -44,13 +44,8 @@ export default {
     },
     data() {
         return {
-            isCollapse: true,
+            isCollapse: false,
             routes
-        }
-    },
-    methods: {
-        test(){
-            this.$router.push('my-orders');
         }
     }
 }
@@ -75,10 +70,10 @@ h3 {
 <style>     /* 解决导航栏折叠子菜单文字不隐藏的bug，必须覆盖全局样式 */
 /* 隐藏文字 */
 .el-menu--collapse .el-submenu__title span{
-display: none;
+    display: none;
 }
 /* 隐藏 > , 默认该i元素标签无hash值，因此scoped无效，必须使用全局样式覆盖 */
 .el-menu--collapse .el-submenu__title .el-submenu__icon-arrow{
-display: none;
+    display: none;
 }
 </style>

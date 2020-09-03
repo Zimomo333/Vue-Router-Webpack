@@ -29,7 +29,7 @@ export default {
       type: Object,
       required: true
     },
-    basePath: {
+    basePath: {     //从父组件一直拼接下来的基路径
       type: String,
       default: ''
     }

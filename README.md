@@ -1,4 +1,4 @@
-# Vue模块化开发
+# Vue-Router-Webpack 模块化开发
 
 ### 项目目的
 
@@ -6,16 +6,20 @@
 
 
 
-### 项目模块
+### 项目功能
+
+1. 导航栏（折叠）
+2. 面包屑
+3. 正文区域
+
+
+
+### 项目依赖
 
 1. Vue
 2. Vue Router
 3. Element-UI
 4. webpack
-
-
-
-### 安装项目依赖
 
 ```shell
 npm init
@@ -80,6 +84,8 @@ new Vue({
 
 ### router.js
 
+以 `/` 开头的嵌套路径会被当作根路径，因此子路由的path无需加 `/` 
+
 ```javascript
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -87,8 +93,40 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 export const routes = [
-    { path: '/info', name: '个人中心', icon: 'el-icon-user-solid', component: () => import('../views/info.vue') },
-    { path: '/orders', name: '我的订单', icon: 'el-icon-s-order', component: () => import('../views/orders.vue') }
+    { 
+        path: '/info',
+        component: () => import('./views/info.vue'),
+        meta: { 
+            title: '个人中心',
+            icon: 'el-icon-user-solid'
+        }
+    },
+    { 
+        path: '/orders',        // 以 / 开头的嵌套路径会被当作根路径
+        component: () => import('./views/orders/index.vue'),    // 可写成{render: (e) => e("router-view")}，避免新建空router-view文件
+        meta: { 
+            title: '订单管理',
+            icon: 'el-icon-s-order'
+        },
+        children: [
+            {
+                path: 'my-orders',      // 子路由不要加 /
+                component: () => import('./views/orders/myOrders.vue'),
+                meta: { 
+                    title: '我的订单',
+                    icon: 'el-icon-s-order'
+                }
+            },
+            {
+                path: 'submit',
+                component: () => import('./views/orders/submit.vue'),
+                meta: { 
+                    title: '提交订单',
+                    icon: 'el-icon-s-order'
+                }
+            }
+        ]
+    }
 ]
 
 const router = new VueRouter({
@@ -172,24 +210,37 @@ module.exports = {
 
 `<style scoped>`  scoped 范围css 防止全局污染
 
+增加了一个全局样式，解决导航栏折叠时子菜单文字不隐藏的bug
+
 ```vue
 <template>
     <div id="app">
         <el-row class="tac">
             <el-col :span="4">
+                <el-radio-group v-model="isCollapse">
+                    <el-radio-button :label="false">展开</el-radio-button>
+                    <el-radio-button :label="true">收起</el-radio-button>
+                </el-radio-group>
                 <h3>导航栏</h3>
                 <el-menu
                 :default-active="this.$route.path"
-                class="el-menu-vertical-demo"
+                :collapse="isCollapse"
                 router
                 >
-                <el-menu-item v-for="item in routes" :key="item.path" :index="item.path">
-                    <i :class="item.icon"></i>
-                    <span slot="title">{{item.name}}</span>
-                </el-menu-item>
+                    <sidebar-item v-for="route in routes" :key="route.path" :item="route" />
                 </el-menu>
             </el-col>
             <el-col :span="16">
+                <el-breadcrumb separator="/">
+                    <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
+                    <el-breadcrumb-item 
+                    v-for="item in this.$route.matched" 
+                    :key="item.path" 
+                    :to="item.path"
+                    >
+                        {{item.meta.title}}
+                    </el-breadcrumb-item>
+                </el-breadcrumb>
                 <h3>正文</h3>
                 <router-view />
             </el-col>
@@ -199,10 +250,16 @@ module.exports = {
 
 <script>
 import { routes } from './router'   // {}指定需要引用的模块
+import SidebarItem from './components/SidebarItem.vue'
+
 export default {
     name: 'App',
-    data(){
+    components: { 
+        SidebarItem
+    },
+    data() {
         return {
+            isCollapse: true,
             routes
         }
     }
@@ -213,7 +270,83 @@ export default {
 h3 {
     text-align: center;
 }
+.el-breadcrumb {
+    font-size: 1.17em;
+    margin: 21.92px;
+}
+.el-radio-group {
+    width:100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 13px;
+}
 </style>
+
+<style>     /* 解决导航栏折叠子菜单文字不隐藏的bug，必须覆盖全局样式 */
+/* 隐藏文字 */
+.el-menu--collapse .el-submenu__title span{
+	display: none;
+}
+/* 隐藏 > , 默认该i元素标签无hash值，因此scoped无效，必须使用全局样式覆盖 */
+.el-menu--collapse .el-submenu__title .el-submenu__icon-arrow{
+	display: none;
+}
+</style>
+```
+
+
+
+### SidebarItem.vue(导航栏组件)
+
+组件自调用实现嵌套导航栏
+
+传递basePath记录父路由路径，与子路由拼接成完整路径
+
+```vue
+<template>
+  <!-- 隐藏不需要显示的路由 -->
+  <div v-if="!item.hidden">
+    <!-- 如果没有子路由 -->
+    <template v-if="!item.children">
+        <el-menu-item :key="item.path" :index="resolvePath(item.path)">
+          <i :class="item.meta.icon"></i>
+          <span slot="title">{{item.meta.title}}</span>
+        </el-menu-item>
+    </template>
+    <!-- 如果有子路由，渲染子菜单 -->
+    <el-submenu v-else :index="resolvePath(item.path)">
+      <template slot="title">
+          <i :class="item.meta.icon"></i>
+          <span slot="title">{{item.meta.title}}</span>
+      </template>
+      <sidebar-item v-for="child in item.children" :key="child.path" :item="child" :basePath="resolvePath(item.path)" />
+    </el-submenu>
+  </div>
+</template>
+
+<script>
+import path from 'path'
+
+export default {
+  name: 'SidebarItem',    //组件自调用，必须有name属性
+  props: {                //接收父组件传参
+    item: {
+      type: Object,
+      required: true
+    },
+    basePath: {     //从父组件一直拼接下来的基路径
+      type: String,
+      default: ''
+    }
+  },
+  methods: {
+    //拼接父子路径
+    resolvePath(routePath) {
+      return path.resolve(this.basePath,routePath)
+    }
+  }
+}
+</script>
 ```
 
 
