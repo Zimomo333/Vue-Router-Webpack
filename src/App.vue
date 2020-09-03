@@ -2,21 +2,29 @@
     <div id="app">
         <el-row class="tac">
             <el-col :span="4">
+                <el-radio-group v-model="isCollapse">
+                    <el-radio-button :label="false">展开</el-radio-button>
+                    <el-radio-button :label="true">收起</el-radio-button>
+                </el-radio-group>
                 <h3>导航栏</h3>
                 <el-menu
                 :default-active="this.$route.path"
-                class="el-menu-vertical-demo"
+                :collapse="isCollapse"
                 router
                 >
-
-                <sidebar-item v-for="route in routes" :key="route.path" :item="route" />
-
+                    <sidebar-item v-for="route in routes" :key="route.path" :item="route" />
                 </el-menu>
             </el-col>
             <el-col :span="16">
                 <el-breadcrumb separator="/">
                     <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-                    <el-breadcrumb-item>{{this.$route.meta.title}}</el-breadcrumb-item>
+                    <el-breadcrumb-item 
+                    v-for="item in this.$route.matched" 
+                    :key="item.path" 
+                    :to="item.path"
+                    >
+                        {{item.meta.title}}
+                    </el-breadcrumb-item>
                 </el-breadcrumb>
                 <h3>正文</h3>
                 <router-view />
@@ -36,10 +44,14 @@ export default {
     },
     data() {
         return {
+            isCollapse: true,
             routes
         }
     },
     methods: {
+        test(){
+            this.$router.push('my-orders');
+        }
     }
 }
 </script>
@@ -51,5 +63,22 @@ h3 {
 .el-breadcrumb {
     font-size: 1.17em;
     margin: 21.92px;
+}
+.el-radio-group {
+    width:100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 13px;
+}
+</style>
+
+<style>     /* 解决导航栏折叠子菜单文字不隐藏的bug，必须覆盖全局样式 */
+/* 隐藏文字 */
+.el-menu--collapse .el-submenu__title span{
+display: none;
+}
+/* 隐藏 > , 默认该i元素标签无hash值，因此scoped无效，必须使用全局样式覆盖 */
+.el-menu--collapse .el-submenu__title .el-submenu__icon-arrow{
+display: none;
 }
 </style>

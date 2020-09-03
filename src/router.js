@@ -13,7 +13,7 @@ export const routes = [
         }
     },
     { 
-        path: '/orders',
+        path: '/orders',        // 以 / 开头的嵌套路径会被当作根路径
         component: () => import('./views/orders/index.vue'),
         meta: { 
             title: '订单管理',
@@ -21,7 +21,7 @@ export const routes = [
         },
         children: [
             {
-                path: '/my-orders',
+                path: 'my-orders',      // 子路由不要加/
                 component: () => import('./views/orders/myOrders.vue'),
                 meta: { 
                     title: '我的订单',
@@ -29,7 +29,7 @@ export const routes = [
                 }
             },
             {
-                path: '/submit',
+                path: 'submit',
                 component: () => import('./views/orders/submit.vue'),
                 meta: { 
                     title: '提交订单',
