@@ -2,18 +2,26 @@
     <div id="app">
         <el-row class="tac">
             <el-col :span="4">
-                <el-radio-group v-model="isCollapse">
-                    <el-radio-button :label="false">展开</el-radio-button>
-                    <el-radio-button :label="true">收起</el-radio-button>
-                </el-radio-group>
-                <h3>导航栏</h3>
-                <el-menu
-                :default-active="this.$route.path"
-                :collapse="isCollapse"
-                router
-                >
-                    <sidebar-item v-for="route in routes" :key="route.path" :item="route" />
-                </el-menu>
+                <el-row>
+                    <el-col>
+                        <el-radio-group v-model="isCollapse">
+                            <el-radio-button :label="false">展开</el-radio-button>
+                            <el-radio-button :label="true">收起</el-radio-button>
+                        </el-radio-group>
+                    </el-col>
+                </el-row>
+                <el-row>
+                  <el-col>
+                    <h3>导航栏</h3>
+                    <el-menu
+                    :default-active="this.$route.path"
+                    :collapse="isCollapse"
+                    router
+                    >
+                        <sidebar-item v-for="route in routes" :key="route.path" :item="route" />
+                    </el-menu>
+                  </el-col>
+                </el-row>
             </el-col>
             <el-col :span="16">
                 <el-breadcrumb separator="/">
@@ -60,7 +68,6 @@ h3 {
     margin: 21.92px;
 }
 .el-radio-group {
-    width:100%;
     display: flex;
     justify-content: center;
     margin-top: 13px;
