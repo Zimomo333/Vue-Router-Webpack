@@ -2,7 +2,7 @@
 
 ### 项目目的
 
-不使用vue-cli脚手架，从头搭建模块化开发环境
+不使用vue-cli脚手架，从头搭建Vue模块化开发环境
 
 
 
@@ -10,7 +10,10 @@
 
 1. 导航栏（折叠）
 2. 面包屑
-3. 正文区域
+
+3. Vue-Router（路由功能）
+
+4. Wepack打包压缩，热加载本地服务器
 
 
 
@@ -29,15 +32,15 @@ npm i element-ui -S
 
 npm i vue-router -S
 
-npm i webpack webpack-dev-server -D         //server用于运行打包后的dist资源
+npm i webpack webpack-dev-server -D         // 热加载本地server，用于运行打包后的dist资源
 
 <!-- webpack loader -->
-npm i vue-loader vue-template-compiler -D   //解析vue文件、模板
-npm i css-loader style-loader -D            //解析Element-UI的CSS文件
-npm i file-loader -D                        //解析Element-UI的字体文件
+npm i vue-loader vue-template-compiler -D   // 解析vue文件、模板
+npm i css-loader style-loader -D            // 解析Element-UI的CSS文件
+npm i file-loader -D                        // 解析Element-UI的字体文件
 
 <!-- webpack plugin -->
-npm i html-webpack-plugin -D                //自动生成注入js的index.html
+npm i html-webpack-plugin -D                // 自动生成注入js的index.html
 ```
 
 
@@ -62,27 +65,13 @@ npm i html-webpack-plugin -D                //自动生成注入js的index.html
 
 
 
-### main.js
-
-```javascript
-import App from './App.vue'
-import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'	//ElementUI样式
-import router from './router'
-
-Vue.use(ElementUI);
-
-new Vue({
-    el: '#app',
-    router,
-    render: h => h(App)
-})
-```
 
 
 
-### router.js
+
+## Vue-Router
+
+#### router.js
 
 以 `/` 开头的嵌套路径会被当作根路径，因此子路由的path无需加 `/` 
 
@@ -138,7 +127,13 @@ export default router
 
 
 
-### webpack.config.js
+
+
+
+
+## Webpack
+
+#### webpack.config.js
 
 ```javascript
 const path = require('path')
@@ -182,9 +177,7 @@ module.exports = {
 
 
 
-
-
-### `public/index.html`模板
+#### `public/index.html`模板
 
 默认生成的`index.html `没有 id="app" 挂载点，必须使用自定义模板
 
@@ -204,7 +197,13 @@ module.exports = {
 
 
 
-### App.vue
+
+
+
+
+## 组件
+
+#### App.vue
 
 `import { xxx } from './xxx' ` 指定需要引用的模块
 
@@ -348,6 +347,8 @@ export default {
 }
 </script>
 ```
+
+
 
 
 
