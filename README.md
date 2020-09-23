@@ -71,7 +71,7 @@ npm i html-webpack-plugin -D                // 自动生成注入js的index.html
 
 ## Vue-Router
 
-#### router.js
+### router.js
 
 以 `/` 开头的嵌套路径会被当作根路径，因此子路由的path无需加 `/` 
 
@@ -133,7 +133,7 @@ export default router
 
 ## Webpack
 
-#### webpack.config.js
+### webpack.config.js
 
 ```javascript
 const path = require('path')
@@ -177,7 +177,7 @@ module.exports = {
 
 
 
-#### `public/index.html`模板
+### `public/index.html`模板
 
 默认生成的`index.html `没有 id="app" 挂载点，必须使用自定义模板
 
@@ -203,7 +203,7 @@ module.exports = {
 
 ## 组件
 
-#### App.vue
+### App.vue
 
 `import { xxx } from './xxx' ` 指定需要引用的模块
 
